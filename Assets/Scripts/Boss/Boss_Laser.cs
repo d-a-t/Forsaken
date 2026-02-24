@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Boss_Melee : Weapon
+public class Boss_Laser : Weapon
 {
     protected override void Init()
     {
@@ -10,6 +10,7 @@ public class Boss_Melee : Weapon
     {   
         if (other.gameObject.tag.Equals("Player"))
         {
+            Debug.Log("Laser hit!");
             Attack(other.gameObject.GetComponent<IDamageable>());
         }
 

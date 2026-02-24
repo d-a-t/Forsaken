@@ -1,17 +1,17 @@
 using UnityEngine;
-public class BossLaserAttackState : State
+public class BossLaserWindupState : State
 {
     private BossStateMachine bossContext;
 
-    public BossLaserAttackState(BossStateMachine currentContext) : base(currentContext)
+    public BossLaserWindupState(BossStateMachine currentContext) : base(currentContext)
     {
         bossContext = currentContext;
     }
 
     public override void EnterState()
     {
-        Debug.Log("laser attack");
-        bossContext.Anim.SetTrigger("laser");
+        bossContext.flashCharacter();
+        bossContext.Anim.SetTrigger("laser_windup");
     }
 
     public override void UpdateState()
@@ -21,15 +21,14 @@ public class BossLaserAttackState : State
 
     public override void ExitState()
     {
-        bossContext.Anim.ResetTrigger("laser");
+        bossContext.Anim.ResetTrigger("laser_windup");
     }
 
     public override void CheckSwitchStates()
     {
         if (bossContext.LasersFinished == 1)
         {
-            Debug.Log("finished");
-            SwitchState(new BossIdleState(bossContext));
+            SwitchState(new BossLaserState(bossContext));
         }
     }
 
