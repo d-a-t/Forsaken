@@ -6,26 +6,39 @@ using UnityEngine.UIElements;
 [UxmlElement]
 public partial class CustomBar : VisualElement
 {
+    private float _barValue;
     [UxmlAttribute, CreateProperty]
-    public int value;
+    public float barValue { get => _barValue;  set { _barValue = value; UpdateFill(); } }
+
+    private float _minValue;
+    [UxmlAttribute, CreateProperty]
+    public float minValue { get => _minValue;  set { _minValue = value; UpdateFill(); } }
+
+    private int _maxValue;
+    [UxmlAttribute, CreateProperty]
+    public int maxValue { get => _maxValue;  set { _maxValue = value; UpdateFill(); } }
 
     [UxmlAttribute, CreateProperty]
-    public int minValue;
-
-    [UxmlAttribute]
-    public int maxValue;
-
-    [UxmlAttribute, CreateProperty]
-    public string label;
+    public string label 
+    { 
+        get => textLabel?.text ?? ""; 
+        set 
+        { 
+            if (textLabel != null) 
+            { 
+                textLabel.text = value; 
+                UpdateFill(); 
+            } 
+        } 
+    }
 
 
     public bool editable = false;
 
 
-    readonly VisualElement track;
-    readonly VisualElement fill;
-    readonly Label textLabel;
-    
+    private VisualElement track;
+    private VisualElement fill;
+    private Label textLabel;
 
     public CustomBar()
     {
@@ -41,6 +54,7 @@ public partial class CustomBar : VisualElement
         fill = new VisualElement { name = "fill" };
         fill.AddToClassList("custom-bar__fill");
         fill.style.position = Position.Absolute;
+        fill.style.color = Color.green;
         track.Add(fill);
 
         // TEXT
@@ -61,14 +75,16 @@ public partial class CustomBar : VisualElement
 
         RegisterCallback<GeometryChangedEvent>(_ => UpdateFill());
         RegisterCallback<AttachToPanelEvent>(_ => UpdateFill());
-
-        UpdateFill();
     }
 
     void UpdateFill()
     {
-        float percent = (float)value / maxValue;
-        fill.style.width = Length.Percent(percent * 100f);
+        if (maxValue <= minValue) return;
+
+        float percent = (float)((barValue - minValue) / (maxValue - minValue));
+        float width = track.resolvedStyle.width;
+
+        fill.style.width = width * percent;
         textLabel.text = label;
     }
 }

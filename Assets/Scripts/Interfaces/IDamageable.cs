@@ -1,6 +1,6 @@
 using UnityEngine.UIElements;
 
-public interface IDamageable : IBindable
+public interface IDamageable
 {
     int Health { get; set; }
     float Cooldown { get; set; }

@@ -27,10 +27,6 @@
     background-color: rgb(220, 50, 50);
 }
 
-.bar.mana .custom-bar__fill {
+.bar.cooldown .custom-bar__fill {
     background-color: rgb(60, 120, 255);
-}
-
-.bar.xp .custom-bar__fill {
-    background-color: rgb(120, 200, 80);
 }

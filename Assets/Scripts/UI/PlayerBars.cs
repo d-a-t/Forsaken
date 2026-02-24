@@ -120,7 +120,7 @@ public class PlayerBars : MonoBehaviour
         }
         if (healthBar != null)
         {
-            healthBar.value = value;
+            healthBar.barValue = (int)value;
         }
     }
 
@@ -132,7 +132,7 @@ public class PlayerBars : MonoBehaviour
         }
         if (manaBar != null)
         {
-            manaBar.value = value;
+            manaBar.barValue = (int)value;
         }
     }
 
@@ -144,7 +144,7 @@ public class PlayerBars : MonoBehaviour
         }
         if (xpBar != null)
         {
-            xpBar.value = value;
+            xpBar.barValue = (int)value;
         }
     }
 
