@@ -77,3 +77,9 @@ crashlytics-build.properties
 external packages [DO NOT TOUCH]
 Unity.VisualScripting.Generated
 Packages
+
+# Editor & workspace files
+*.code-workspace
+# Visual Studio solution extension
+*.slnx
+
