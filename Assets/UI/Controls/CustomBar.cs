@@ -1,59 +1,31 @@
+using System;
+using Unity.Properties;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 [UxmlElement]
 public partial class CustomBar : VisualElement
 {
-    [UxmlAttribute]
-    public float value { get; set;}
+    [UxmlAttribute, CreateProperty]
+    public int value;
+
+    [UxmlAttribute, CreateProperty]
+    public int minValue;
 
     [UxmlAttribute]
-    public float minValue {get; set;}
+    public int maxValue;
 
-    [UxmlAttribute]
-    public float maxValue { get; set { m_LowValue = value; UpdateFill(); }}
+    [UxmlAttribute, CreateProperty]
+    public string label;
 
-    [UxmlAttribute]
-    public string visualName { get; set;}
-
-    public float lowValue
-    {
-        get => m_LowValue;
-        set { m_LowValue = value; UpdateFill(); }
-    }
-
-    public float highValue
-    {
-        get => m_HighValue;
-        set { m_HighValue = value; UpdateFill(); }
-    }
-
-    public float step
-    {
-        get => m_Step;
-        set => m_Step = Mathf.Max(0f, value);
-    }
 
     public bool editable = false;
 
-    public float value
-    {
-        get => m_Value;
-        set
-        {
-            float clamped = Mathf.Clamp(value, lowValue, highValue);
-
-            // Snap to step if step > 0
-            if (m_Step > 0f)
-                clamped = Mathf.Round((clamped - lowValue) / m_Step) * m_Step + lowValue;
-
-            m_Value = clamped;
-            UpdateFill();
-        }
-    }
 
     readonly VisualElement track;
     readonly VisualElement fill;
+    readonly Label textLabel;
+    
 
     public CustomBar()
     {
@@ -71,30 +43,32 @@ public partial class CustomBar : VisualElement
         fill.style.position = Position.Absolute;
         track.Add(fill);
 
+        // TEXT
+        textLabel = new Label
+        {
+            name = "text",
+            text = label
+        };
+        textLabel.AddToClassList("custom-bar__text");
+        textLabel.style.unityTextAlign = TextAnchor.MiddleCenter;
+        textLabel.style.position = Position.Absolute;
+        textLabel.style.left = 0;
+        textLabel.style.right = 0;
+        textLabel.style.top = 0;
+        textLabel.style.bottom = 0;
+        track.Add(textLabel);
+
+
         RegisterCallback<GeometryChangedEvent>(_ => UpdateFill());
         RegisterCallback<AttachToPanelEvent>(_ => UpdateFill());
-
-        RegisterCallback<PointerDownEvent>(OnPointer);
-        RegisterCallback<PointerMoveEvent>(OnPointer);
 
         UpdateFill();
     }
 
-    void OnPointer(IPointerEvent evt)
-    {
-        if (!editable || track.contentRect.width <= 0f)
-            return;
-
-        float percent = Mathf.Clamp01(evt.localPosition.x / track.contentRect.width);
-        value = Mathf.Lerp(lowValue, highValue, percent);
-    }
-
     void UpdateFill()
     {
-        if (highValue <= lowValue)
-            return;
-
-        float percent = Mathf.InverseLerp(lowValue, highValue, m_Value);
+        float percent = (float)value / maxValue;
         fill.style.width = Length.Percent(percent * 100f);
+        textLabel.text = label;
     }
 }

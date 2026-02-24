@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:controls="UI.Controls" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/PlayerBars.uss?fileID=7433441132597879392&amp;guid=4e35a7aec36fa524798d10a489f04919&amp;type=3#PlayerBars" />
+    <ui:VisualElement name="Panel" data-source="project://database/Assets/UI/PlayerBars.uss?fileID=7433441132597879392&amp;guid=4e35a7aec36fa524798d10a489f04919&amp;type=3#PlayerBars" class="panel" style="align-items: flex-start; justify-content: flex-start; margin-top: 10px; margin-left: 10px;">
+        <CustomBar minValue="0" maxValue="100" value="25" label="Health" class="bar health" />
+        <CustomBar minValue="0" maxValue="100" value="5" label="Mana" class="bar mana" />
+        <CustomBar minValue="0" maxValue="100" value="25" label="XP" class="bar xp" style="justify-content: center;" />
+    </ui:VisualElement>
+</ui:UXML>
